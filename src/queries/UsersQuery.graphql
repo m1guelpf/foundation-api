@@ -1,0 +1,13 @@
+query usersByIds($userIds: [String!]!) {
+    users: user(where: {publicKey: {_in: $userIds}}) {
+        userIndex
+        username
+        name
+        bio
+        profileImageUrl
+        coverImageUrl
+        isApprovedCreator
+        publicKey
+        links
+    }
+}

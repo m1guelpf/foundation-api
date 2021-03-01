@@ -1,0 +1,49 @@
+query LiveArtworksQuery($limit: Int, $now: Int) {
+    auctions: nftMarketAuctions(
+        where: {status: Open, dateEnding_gt: $now, highestBid_not: null}
+        orderBy: dateEnding
+        orderDirection: asc
+        first: $limit
+    ) {
+        auctionId
+        nft {
+            id
+			tokenId
+			isPrimarySale
+			dateMinted
+			creator {
+				id
+			}
+            mostRecentAuction {
+                ...AuctionFragment
+                bids {
+                    ...BidFragment
+                }
+                highestBid {
+                    ...BidFragment
+                }
+            }
+        }
+    }
+}
+
+fragment AuctionFragment on NftMarketAuction {
+	id
+	auctionId
+	duration
+	status
+	reservePriceInETH
+	dateEnding
+	dateStarted
+	dateCreated
+	transactionHashCreated
+}
+
+fragment BidFragment on NftMarketBid {
+	amountInETH
+	status
+	datePlaced
+	bidder {
+		id
+	}
+}
